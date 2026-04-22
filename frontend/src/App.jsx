@@ -28,17 +28,10 @@ function App() {
     setIsTyping(true);
 
     try {
-      // Convert to OpenAI format
-      const formattedMessages = [
-        {
-          role: "system",
-          content: "You are a friendly gym assistant. Keep answers short and helpful."
-        },
-        ...updatedMessages.map(msg => ({
-          role: msg.sender === "user" ? "user" : "assistant",
-          content: msg.text
-        }))
-      ];
+      const formattedMessages = updatedMessages.map((msg) => ({
+        role: msg.sender === "user" ? "user" : "assistant",
+        content: msg.text
+      }));
 
       const res = await fetch("http://127.0.0.1:8000/chat", {
         method: "POST",
@@ -50,13 +43,12 @@ function App() {
 
       const data = await res.json();
 
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         { text: data.reply, sender: "bot" }
       ]);
-
     } catch (err) {
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
           text: "Something went wrong. Please try again.",
@@ -71,7 +63,6 @@ function App() {
   return (
     <div className="page">
       <div className="chat-shell">
-
         <header className="chat-header">
           <div className="brand">
             <div className="brand-badge">F</div>
@@ -94,7 +85,6 @@ function App() {
           onChange={setInputValue}
           onSend={sendMessage}
         />
-
       </div>
     </div>
   );

@@ -1,0 +1,21 @@
+{
+  "business_name": "FitZone Gym",
+  "membership_price": "$50 per month",
+  "personal_training_price": "$30 per session",
+  "opening_hours": {
+    "sunday_to_thursday": "6:00 AM - 10:00 PM",
+    "friday": "6:00 AM - 4:00 PM",
+    "saturday": "Closed"
+  },
+  "location": "Tel Aviv",
+  "services": [
+    "Gym access",
+    "Group classes",
+    "Personal training"
+  ],
+  "contact_email": "fitzone@email.com",
+  "notes": [
+    "Keep answers short and clear",
+    "If you do not know the answer, tell the user to contact support"
+  ]
+}
