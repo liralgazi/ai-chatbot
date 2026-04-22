@@ -1,10 +1,21 @@
 from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from openai import OpenAI
 
 load_dotenv()
 client = OpenAI()
 
-print("Business Chatbot is ready! Type 'exit' to quit.\n")
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 messages = [
     {
@@ -31,13 +42,16 @@ Rules:
     }
 ]
 
-while True:
-    user_input = input("You: ")
+class ChatRequest(BaseModel):
+    message: str
 
-    if user_input.lower() == "exit":
-        break
+@app.get("/")
+def root():
+    return {"status": "ok", "message": "FitZone backend is running"}
 
-    messages.append({"role": "user", "content": user_input})
+@app.post("/chat")
+def chat(request: ChatRequest):
+    messages.append({"role": "user", "content": request.message})
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -45,6 +59,6 @@ while True:
     )
 
     reply = response.choices[0].message.content
-    print("Bot:", reply)
-
     messages.append({"role": "assistant", "content": reply})
+
+    return {"reply": reply}
